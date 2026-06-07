@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "description": "Banco de questoes para a Trilha OBMEP. As primeiras entradas usam provas e solucoes oficiais da OBMEP como fonte.",
+  "questions": [
+    {
+      "id": "obmep-2011-f1-n2-q01",
+      "level": "nivel2",
+      "step": 1,
+      "order": 1,
+      "title": "Passo 1/100: OBMEP oficial - divisao com resto",
+      "skill": "Divisao e estimativa",
+      "prompt": "Quantos copos de 130 mililitros e possivel encher, ate a borda, com dois litros de agua?",
+      "options": ["11", "12", "13", "14", "15"],
+      "answer": 4,
+      "feedback": "Isso. Dois litros correspondem a 2000 mililitros, e precisamos contar apenas copos completos.",
+      "misconception": "O cuidado aqui e nao arredondar para cima: sobra agua, mas ela nao enche outro copo ate a borda.",
+      "explanation": "Como 2 litros equivalem a 2000 mililitros, fazemos 2000 dividido por 130. Temos 15 copos completos, pois 15 x 130 = 1950, e sobram 50 mililitros.",
+      "visual": "officialCard",
+      "source": {
+        "competition": "OBMEP",
+        "year": 2011,
+        "phase": "1a fase",
+        "level": "nivel2",
+        "levelLabel": "Nivel 2",
+        "questionNumber": 1,
+        "problemUrl": "https://www.obmep.org.br/provas_static/2011/pf1n2-2011.pdf",
+        "solutionUrl": "https://www.obmep.org.br/provas_static/2011/sf1n2-2011.pdf"
+      }
+    },
+    {
+      "id": "obmep-2011-f1-n2-q02",
+      "level": "nivel2",
+      "step": 1,
+      "order": 2,
+      "title": "Passo 1/100: OBMEP oficial - divisibilidade",
+      "skill": "Resto da divisao",
+      "prompt": "Qual e o resto da divisao de 1 x 2 x 3 x 4 x ... x 2011 + 21 por 8?",
+      "options": ["2", "3", "5", "6", "7"],
+      "answer": 2,
+      "feedback": "Boa. Voce percebeu que o produto grande ja e multiplo de 8.",
+      "misconception": "Nao e preciso calcular o produto. O ponto e notar a divisibilidade por 8.",
+      "explanation": "O produto 1 x 2 x 3 x 4 x ... x 2011 contem o fator 8, portanto e multiplo de 8. Como 21 deixa resto 5 na divisao por 8, o resto total e 5.",
+      "visual": "officialCard",
+      "source": {
+        "competition": "OBMEP",
+        "year": 2011,
+        "phase": "1a fase",
+        "level": "nivel2",
+        "levelLabel": "Nivel 2",
+        "questionNumber": 2,
+        "problemUrl": "https://www.obmep.org.br/provas_static/2011/pf1n2-2011.pdf",
+        "solutionUrl": "https://www.obmep.org.br/provas_static/2011/sf1n2-2011.pdf"
+      }
+    },
+    {
+      "id": "obmep-2011-f1-n2-q05",
+      "level": "nivel2",
+      "step": 1,
+      "order": 3,
+      "title": "Passo 1/100: OBMEP oficial - contagem de algarismos",
+      "skill": "Contagem de casos",
+      "prompt": "Vovo Eduardo usa velinhas em forma de algarismos para marcar as idades de 40 a 85 anos, guardando as antigas e comprando novas so quando precisa. Quantas velinhas ele comprou ate hoje?",
+      "options": ["10", "11", "13", "14", "16"],
+      "answer": 3,
+      "feedback": "Certo. A ideia e contar quais algarismos precisam existir e quais precisam aparecer duplicados.",
+      "misconception": "Nao conte uma vela nova a cada aniversario. Ele guarda e reutiliza as velinhas.",
+      "explanation": "Para formar idades com dois algarismos diferentes a partir de 40, ele precisa ter os algarismos de 0 a 9, ou seja, 10 velas. Para 44, 55, 66 e 77, precisa de uma segunda vela desses algarismos. Total: 10 + 4 = 14.",
+      "visual": "officialCard",
+      "source": {
+        "competition": "OBMEP",
+        "year": 2011,
+        "phase": "1a fase",
+        "level": "nivel2",
+        "levelLabel": "Nivel 2",
+        "questionNumber": 5,
+        "problemUrl": "https://www.obmep.org.br/provas_static/2011/pf1n2-2011.pdf",
+        "solutionUrl": "https://www.obmep.org.br/provas_static/2011/sf1n2-2011.pdf"
+      }
+    },
+    {
+      "id": "obmep-2011-f1-n2-q07",
+      "level": "nivel2",
+      "step": 1,
+      "order": 4,
+      "title": "Passo 1/100: OBMEP oficial - conjuntos",
+      "skill": "Porcentagens e intersecao",
+      "prompt": "Em uma pesquisa com 1000 pessoas, 85% possuem televisao e 80% possuem geladeira. No minimo, quantas possuem os dois eletrodomesticos?",
+      "options": ["500", "550", "650", "700", "800"],
+      "answer": 2,
+      "feedback": "Muito bem. Voce usou o pior caso para minimizar a intersecao.",
+      "misconception": "Nao basta multiplicar as porcentagens. A pergunta pede o menor numero garantido.",
+      "explanation": "No maximo 15% nao possuem televisao e 20% nao possuem geladeira. Assim, no maximo 35% podem faltar a pelo menos um dos dois. Logo, no minimo 65% possuem ambos. De 1000 pessoas, isso da 650.",
+      "visual": "officialCard",
+      "source": {
+        "competition": "OBMEP",
+        "year": 2011,
+        "phase": "1a fase",
+        "level": "nivel2",
+        "levelLabel": "Nivel 2",
+        "questionNumber": 7,
+        "problemUrl": "https://www.obmep.org.br/provas_static/2011/pf1n2-2011.pdf",
+        "solutionUrl": "https://www.obmep.org.br/provas_static/2011/sf1n2-2011.pdf"
+      }
+    },
+    {
+      "id": "obmep-2011-f1-n2-q11",
+      "level": "nivel2",
+      "step": 1,
+      "order": 5,
+      "title": "Passo 1/100: OBMEP oficial - relacoes familiares",
+      "skill": "Modelagem algebrica",
+      "prompt": "Joao e Ana sao irmaos. Joao tem cinco irmaos a mais do que irmas. Quantos irmaos Ana tem a mais do que irmas?",
+      "options": ["2", "3", "5", "6", "7"],
+      "answer": 4,
+      "feedback": "Excelente. A diferenca muda porque Joao e Ana pertencem a grupos diferentes.",
+      "misconception": "A resposta nao continua sendo 5, pois ao trocar o ponto de vista de Joao para Ana, um menino entra e uma menina sai da contagem.",
+      "explanation": "Se Joao tem x irmaos e y irmas, entao x - y = 5. Para Ana, os irmaos sao x + 1, pois Joao tambem conta, e as irmas sao y - 1, pois Ana nao conta a si mesma. A diferenca e (x + 1) - (y - 1) = 7.",
+      "visual": "officialCard",
+      "source": {
+        "competition": "OBMEP",
+        "year": 2011,
+        "phase": "1a fase",
+        "level": "nivel2",
+        "levelLabel": "Nivel 2",
+        "questionNumber": 11,
+        "problemUrl": "https://www.obmep.org.br/provas_static/2011/pf1n2-2011.pdf",
+        "solutionUrl": "https://www.obmep.org.br/provas_static/2011/sf1n2-2011.pdf"
+      }
+    }
+  ]
+}

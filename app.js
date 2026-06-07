@@ -7,6 +7,8 @@ const levels = [
   { id: "nivel3", label: "Nível 3", range: "Ensino médio", theme: "Generalização" },
 ];
 
+let questionBank = { questions: [] };
+
 const state = {
   level: "nivel1",
   step: 1,
@@ -28,13 +30,28 @@ const $ = (id) => document.getElementById(id);
 
 function init() {
   renderLevels();
-  startLevel(state.level);
+  const requestedLevel = new URLSearchParams(window.location.search).get("level");
+  if (levels.some((level) => level.id === requestedLevel)) {
+    state.level = requestedLevel;
+  }
+  loadQuestionBank().then(() => startLevel(state.level));
   $("resetButton").addEventListener("click", () => startLevel(state.level));
   $("skipButton").addEventListener("click", skipQuestion);
   $("nextButton").addEventListener("click", handlePrimary);
   $("whyButton").addEventListener("click", () => {
     $("explanationPanel").hidden = !$("explanationPanel").hidden;
   });
+}
+
+async function loadQuestionBank() {
+  try {
+    const response = await fetch("questions.json", { cache: "no-store" });
+    if (!response.ok) throw new Error(`questions.json HTTP ${response.status}`);
+    questionBank = await response.json();
+  } catch (error) {
+    console.warn("Usando gerador interno: questions.json nao carregou.", error);
+    questionBank = { questions: [] };
+  }
 }
 
 function renderLevels() {
@@ -80,6 +97,9 @@ function startStep(step) {
 }
 
 function generateStep(level, step) {
+  const officialQuestions = questionsFromBank(level, step);
+  if (officialQuestions.length >= QUESTIONS_PER_STEP) return officialQuestions;
+
   const generators = questionGenerators[level];
   return Array.from({ length: QUESTIONS_PER_STEP }, (_, index) => {
     const generator = generators[index % generators.length];
@@ -91,6 +111,19 @@ function generateStep(level, step) {
       review: false,
     };
   });
+}
+
+function questionsFromBank(level, step) {
+  return questionBank.questions
+    .filter((question) => question.level === level && question.step === step)
+    .sort((a, b) => a.order - b.order)
+    .slice(0, QUESTIONS_PER_STEP)
+    .map((question, index) => ({
+      ...question,
+      id: question.id,
+      originalIndex: index,
+      review: false,
+    }));
 }
 
 function makeOptions(correct, distractors, suffix = "") {
@@ -446,7 +479,7 @@ function renderQuestion() {
   $("questionTitle").textContent = question.title;
   $("skillLabel").textContent = question.skill;
   $("questionPrompt").textContent = question.prompt;
-  $("visualBoard").innerHTML = visuals[question.visual](question);
+  $("visualBoard").innerHTML = (visuals[question.visual] || visuals.officialCard)(question);
   $("feedbackPanel").hidden = true;
   $("feedbackPanel").classList.remove("wrong");
   $("explanationPanel").hidden = true;
@@ -585,6 +618,18 @@ function renderCelebration() {
   renderProgress(1);
 }
 
+function sourceText(question) {
+  if (!question.source) return "";
+  const parts = [
+    question.source.competition,
+    question.source.year,
+    question.source.phase,
+    question.source.levelLabel,
+    question.source.questionNumber ? `questao ${question.source.questionNumber}` : "",
+  ].filter(Boolean);
+  return parts.join(" - ");
+}
+
 function renderProgress(forceRatio) {
   const ratio = forceRatio ?? Math.min(state.correctIds.size / QUESTIONS_PER_STEP, 1);
   const percent = Math.round(ratio * 100);
@@ -618,6 +663,16 @@ function renderProgress(forceRatio) {
 }
 
 const visuals = {
+  officialCard: (question) => `
+    <svg viewBox="0 0 360 260" role="img" aria-label="Questao oficial da OBMEP">
+      <rect width="360" height="260" fill="#f6f8f4"/>
+      <rect x="45" y="38" width="270" height="184" rx="8" fill="#ffffff" stroke="#17202a" stroke-width="3"/>
+      <rect x="45" y="38" width="270" height="42" rx="8" fill="#47a447"/>
+      <text x="180" y="65" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="900">OBMEP oficial</text>
+      <text x="180" y="119" text-anchor="middle" fill="#17202a" font-size="19" font-weight="900">${question.source?.year || ""} - ${question.source?.levelLabel || ""}</text>
+      <text x="180" y="151" text-anchor="middle" fill="#60707f" font-size="15" font-weight="800">${question.source?.phase || ""}</text>
+      <text x="180" y="183" text-anchor="middle" fill="#ee6c4d" font-size="17" font-weight="900">Questao ${question.source?.questionNumber || ""}</text>
+    </svg>`,
   gridArea: (question) => {
     const { rows, cols, missing } = question.diagram;
     const total = rows * cols;
