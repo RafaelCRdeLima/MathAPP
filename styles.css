@@ -439,12 +439,21 @@ button {
 
 @media (max-width: 860px) {
   .app-shell {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
 
   .sidebar {
+    order: 2;
     position: static;
     padding: 18px;
+  }
+
+  .lesson {
+    order: 1;
   }
 
   .question-stage,
@@ -454,10 +463,19 @@ button {
 }
 
 @media (max-width: 560px) {
+  body {
+    background: #f8fafc;
+  }
+
   .lesson {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 100svh;
     width: 100vw;
     max-width: 100vw;
-    padding-inline: 20px;
+    padding: 12px 28px 16px 14px;
+    overflow: hidden;
   }
 
   .topbar > div,
@@ -465,26 +483,109 @@ button {
   .visual-board,
   .question-stage,
   .answer-zone {
-    width: calc(100vw - 40px);
-    max-width: calc(100vw - 40px);
+    width: calc(100vw - 72px);
+    max-width: calc(100vw - 72px);
   }
 
   .topbar h2 {
-    font-size: 20px;
+    margin-top: 5px;
+    max-width: 34ch;
+    font-size: 15px;
+    line-height: 1.15;
     word-break: break-word;
   }
 
   .topbar,
-  .lesson-actions,
   .feedback {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .topbar {
+    gap: 8px;
+  }
+
+  .lesson-actions {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 10px;
+    width: calc(100vw - 72px);
+    max-width: calc(100vw - 72px);
+    margin-top: auto;
+  }
+
+  .mode-pill {
+    min-height: 24px;
+    padding-inline: 8px;
+    font-size: 11px;
   }
 
   .ghost-button,
   .secondary-button,
   .primary-button {
     width: 100%;
+  }
+
+  .ghost-button {
+    min-height: 34px;
+  }
+
+  .question-stage {
+    gap: 10px;
+  }
+
+  .visual-board {
+    min-height: 190px;
+    max-height: 220px;
+  }
+
+  .visual-board svg {
+    width: min(86%, 320px);
+    max-height: 210px;
+  }
+
+  .question-copy {
+    min-height: 0;
+  }
+
+  .microcopy {
+    margin-bottom: 5px;
+    font-size: 11px;
+  }
+
+  #questionPrompt {
+    max-width: 100%;
+    inline-size: min(31ch, 100%);
+    font-size: 16px;
+    line-height: 1.14;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .answer-zone {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .answer-option {
+    min-height: 58px;
+    padding: 10px 12px;
+    font-size: 15px;
+  }
+
+  .secondary-button,
+  .primary-button {
+    min-height: 46px;
+    font-size: 14px;
+  }
+
+  .primary-button {
+    min-width: 0;
+  }
+
+  .sidebar {
+    border-top: 1px solid var(--line);
+    border-right: 0;
   }
 
   .level-button {
