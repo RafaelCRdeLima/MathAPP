@@ -48,6 +48,11 @@
       </aside>
 
       <main class="lesson">
+        <div class="mobile-progress" aria-label="Progresso do passo">
+          <button class="mobile-close" id="mobileResetButton" type="button" aria-label="Reiniciar passo">×</button>
+          <div class="mobile-track"><span id="mobileProgressFill"></span></div>
+        </div>
+
         <header class="topbar">
           <div>
             <span id="modePill" class="mode-pill">Aprender</span>
@@ -81,7 +86,7 @@
 
         <footer class="lesson-actions">
           <button class="secondary-button" id="skipButton" type="button">Pular</button>
-          <button class="primary-button" id="nextButton" type="button" disabled>Responder</button>
+          <button class="primary-button" id="nextButton" type="button" disabled>CHECK</button>
         </footer>
       </main>
     </div>

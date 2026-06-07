@@ -43,6 +43,7 @@ function init() {
     restoreProgress() || startLevel(state.level);
   });
   $("resetButton").addEventListener("click", () => startStep(state.step));
+  $("mobileResetButton").addEventListener("click", () => startStep(state.step));
   $("clearProgressButton").addEventListener("click", clearSavedProgress);
   $("skipButton").addEventListener("click", skipQuestion);
   $("nextButton").addEventListener("click", handlePrimary);
@@ -573,7 +574,7 @@ function renderQuestion() {
   $("feedbackPanel").classList.remove("wrong");
   $("explanationPanel").hidden = true;
   $("explanationText").textContent = question.explanation;
-  $("nextButton").textContent = "Responder";
+  $("nextButton").textContent = "CHECK";
   $("nextButton").disabled = true;
   $("skipButton").disabled = false;
 
@@ -632,13 +633,13 @@ function submitAnswer() {
     }
     state.xp += question.review ? 8 : 12;
     state.streak += 1;
-    $("feedbackTitle").textContent = question.review ? "Agora ficou sólido!" : "Muito bem!";
+    $("feedbackTitle").textContent = question.review ? "Agora ficou sólido!" : "Boa!";
     $("feedbackText").textContent = question.feedback;
   } else {
     state.streak = 0;
     state.mistakes.push({ ...question, review: true });
     $("feedbackPanel").classList.add("wrong");
-    $("feedbackTitle").textContent = "Boa tentativa. Vamos ajustar.";
+    $("feedbackTitle").textContent = "Não foi dessa vez";
     $("feedbackText").textContent = question.misconception;
   }
 
@@ -657,7 +658,7 @@ function skipQuestion() {
 }
 
 function nextButtonLabelAfterAnswer() {
-  if (state.currentIndex < state.queue.length - 1) return "Continuar";
+  if (state.currentIndex < state.queue.length - 1) return "Próxima";
   if (state.mistakes.length) return "Revisar erros";
   return state.correctIds.size === QUESTIONS_PER_STEP ? "Concluir" : "Continuar";
 }
@@ -729,6 +730,7 @@ function renderProgress(forceRatio) {
   const percent = Math.round(ratio * 100);
   const levelPercent = Math.round(((state.step - 1 + ratio) / TOTAL_STEPS) * 100);
   $("progressRing").style.strokeDashoffset = 314 - 314 * ratio;
+  $("mobileProgressFill").style.width = `${percent}%`;
   $("progressPercent").textContent = `${percent}%`;
   $("setLabel").textContent = state.reviewing ? `Revisão do passo ${state.step}` : `Passo ${state.step}/${TOTAL_STEPS}`;
   $("xpLabel").textContent = `${state.xp} XP`;
