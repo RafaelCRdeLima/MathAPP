@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trilha OBMEP</title>
+    <meta name="theme-color" content="#47a447" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Progresso da trilha">
+        <div class="brand">
+          <div class="brand-mark">O</div>
+          <div>
+            <p>Trilha</p>
+            <h1>OBMEP</h1>
+          </div>
+        </div>
+
+        <section class="level-picker" aria-labelledby="level-title">
+          <h2 id="level-title">Nível da prova</h2>
+          <div class="level-buttons" id="levelButtons"></div>
+        </section>
+
+        <section class="progress-panel" aria-labelledby="progress-title">
+          <h2 id="progress-title">Passo atual</h2>
+          <div class="ring" aria-hidden="true">
+            <svg viewBox="0 0 120 120">
+              <circle class="track" cx="60" cy="60" r="50"></circle>
+              <circle class="fill" id="progressRing" cx="60" cy="60" r="50"></circle>
+            </svg>
+            <span id="progressPercent">0%</span>
+          </div>
+          <p id="setLabel">Fundamentos</p>
+          <div class="xp-row">
+            <span id="xpLabel">0 XP</span>
+            <span id="streakLabel">Sequência 0</span>
+          </div>
+        </section>
+
+        <section class="skill-map" aria-label="Mapa de habilidades">
+          <div id="skillMap"></div>
+        </section>
+      </aside>
+
+      <main class="lesson">
+        <header class="topbar">
+          <div>
+            <span id="modePill" class="mode-pill">Aprender</span>
+            <h2 id="questionTitle">Escolha um nível para começar</h2>
+          </div>
+          <button class="ghost-button" id="resetButton" type="button">Reiniciar</button>
+        </header>
+
+        <section class="question-stage" aria-live="polite">
+          <div class="visual-board" id="visualBoard"></div>
+          <div class="question-copy">
+            <p class="microcopy" id="skillLabel">Aquecimento</p>
+            <p id="questionPrompt">A trilha começa com ideias pequenas e vai usando cada uma nas próximas questões.</p>
+          </div>
+        </section>
+
+        <section class="answer-zone" id="answerZone" aria-label="Alternativas"></section>
+
+        <section class="feedback" id="feedbackPanel" hidden>
+          <div>
+            <strong id="feedbackTitle">Muito bem!</strong>
+            <p id="feedbackText"></p>
+          </div>
+          <button id="whyButton" class="link-button" type="button">Ver explicação</button>
+        </section>
+
+        <section class="explanation" id="explanationPanel" hidden>
+          <h3>Por que isso acontece?</h3>
+          <p id="explanationText"></p>
+        </section>
+
+        <footer class="lesson-actions">
+          <button class="secondary-button" id="skipButton" type="button">Pular</button>
+          <button class="primary-button" id="nextButton" type="button" disabled>Responder</button>
+        </footer>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("service-worker.js");
+        });
+      }
+    </script>
+  </body>
+</html>
