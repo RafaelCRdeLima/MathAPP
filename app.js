@@ -16,6 +16,8 @@ const state = {
   answered: false,
   mistakes: [],
   completed: 0,
+  correctIds: new Set(),
+  stepQuestions: [],
   xp: 0,
   streak: 0,
   reviewing: false,
@@ -64,11 +66,13 @@ function startLevel(level) {
 
 function startStep(step) {
   state.step = step;
-  state.queue = generateStep(state.level, step);
+  state.stepQuestions = generateStep(state.level, step);
+  state.queue = state.stepQuestions;
   state.currentIndex = 0;
   state.selected = null;
   state.answered = false;
   state.mistakes = [];
+  state.correctIds = new Set();
   state.completed = 0;
   state.reviewing = false;
   state.finished = false;
@@ -83,6 +87,7 @@ function generateStep(level, step) {
       ...generator(step, index),
       id: `${level}-${step}-${index}`,
       step,
+      originalIndex: index,
       review: false,
     };
   });
@@ -491,7 +496,6 @@ function submitAnswer() {
   const question = currentQuestion();
   const correct = state.selected === question.answer;
   state.answered = true;
-  state.completed += 1;
 
   document.querySelectorAll(".answer-option").forEach((button) => {
     const index = Number(button.dataset.index);
@@ -500,6 +504,10 @@ function submitAnswer() {
   });
 
   if (correct) {
+    if (!state.correctIds.has(question.id)) {
+      state.correctIds.add(question.id);
+      state.completed = state.correctIds.size;
+    }
     state.xp += question.review ? 8 : 12;
     state.streak += 1;
     $("feedbackTitle").textContent = question.review ? "Agora ficou sólido!" : "Muito bem!";
@@ -513,7 +521,7 @@ function submitAnswer() {
   }
 
   $("feedbackPanel").hidden = false;
-  $("nextButton").textContent = state.currentIndex === state.queue.length - 1 ? "Concluir" : "Continuar";
+  $("nextButton").textContent = nextButtonLabelAfterAnswer();
   $("skipButton").disabled = true;
   renderProgress();
 }
@@ -521,8 +529,13 @@ function submitAnswer() {
 function skipQuestion() {
   const question = currentQuestion();
   state.mistakes.push({ ...question, review: true });
-  state.completed += 1;
   moveNext();
+}
+
+function nextButtonLabelAfterAnswer() {
+  if (state.currentIndex < state.queue.length - 1) return "Continuar";
+  if (state.mistakes.length) return "Revisar erros";
+  return state.correctIds.size === QUESTIONS_PER_STEP ? "Concluir" : "Continuar";
 }
 
 function moveNext() {
@@ -535,13 +548,14 @@ function moveNext() {
   if (state.mistakes.length) {
     state.queue = state.mistakes.splice(0);
     state.currentIndex = 0;
-    state.completed = 0;
     state.reviewing = true;
     renderQuestion();
     return;
   }
 
-  renderCelebration();
+  if (state.correctIds.size === QUESTIONS_PER_STEP) {
+    renderCelebration();
+  }
 }
 
 function renderCelebration() {
@@ -572,8 +586,7 @@ function renderCelebration() {
 }
 
 function renderProgress(forceRatio) {
-  const total = Math.max(state.queue.length, 1);
-  const ratio = forceRatio ?? Math.min(state.completed / total, 1);
+  const ratio = forceRatio ?? Math.min(state.correctIds.size / QUESTIONS_PER_STEP, 1);
   const percent = Math.round(ratio * 100);
   const levelPercent = Math.round(((state.step - 1 + ratio) / TOTAL_STEPS) * 100);
   $("progressRing").style.strokeDashoffset = 314 - 314 * ratio;
@@ -582,9 +595,18 @@ function renderProgress(forceRatio) {
   $("xpLabel").textContent = `${state.xp} XP`;
   $("streakLabel").textContent = `${levelPercent}% do nível`;
 
-  $("skillMap").innerHTML = state.queue
+  const current = currentQuestion();
+  const revealThrough = Math.min(
+    QUESTIONS_PER_STEP - 1,
+    Math.max(state.correctIds.size, current?.originalIndex ?? 0)
+  );
+
+  $("skillMap").innerHTML = state.stepQuestions
+    .slice(0, revealThrough + 1)
     .map((question, index) => {
-      const status = index < state.currentIndex || (index === state.currentIndex && state.answered) ? "done" : index === state.currentIndex ? "active" : "";
+      const isCorrect = state.correctIds.has(question.id);
+      const isCurrent = current?.id === question.id && !isCorrect;
+      const status = isCorrect ? "done" : isCurrent ? "active" : "";
       return `
         <div class="skill-node ${status}">
           <span class="skill-dot">${index + 1}</span>

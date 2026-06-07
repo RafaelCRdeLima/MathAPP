@@ -1,4 +1,4 @@
-const CACHE_NAME = "trilha-obmep-v1";
+const CACHE_NAME = "trilha-obmep-v2";
 const APP_FILES = [
   "./",
   "./index.html",
