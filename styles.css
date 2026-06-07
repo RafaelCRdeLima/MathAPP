@@ -277,7 +277,8 @@ button {
 .ghost-button,
 .secondary-button,
 .primary-button,
-.link-button {
+.link-button,
+.danger-button {
   min-height: 44px;
   border-radius: 8px;
   padding: 0 16px;
@@ -285,10 +286,15 @@ button {
 }
 
 .ghost-button,
-.secondary-button {
+.secondary-button,
+.danger-button {
   border: 1px solid var(--line);
   color: var(--muted);
   background: var(--surface);
+}
+
+.danger-button {
+  color: var(--red);
 }
 
 .primary-button {

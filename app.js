@@ -1,5 +1,6 @@
 const TOTAL_STEPS = 100;
 const QUESTIONS_PER_STEP = 5;
+const STORAGE_KEY = "trilha-obmep-progress-v1";
 
 const levels = [
   { id: "nivel1", label: "Nível 1", range: "6º e 7º anos", theme: "Fundamentos visuais" },
@@ -34,8 +35,15 @@ function init() {
   if (levels.some((level) => level.id === requestedLevel)) {
     state.level = requestedLevel;
   }
-  loadQuestionBank().then(() => startLevel(state.level));
-  $("resetButton").addEventListener("click", () => startLevel(state.level));
+  loadQuestionBank().then(() => {
+    if (requestedLevel) {
+      startLevel(state.level);
+      return;
+    }
+    restoreProgress() || startLevel(state.level);
+  });
+  $("resetButton").addEventListener("click", () => startStep(state.step));
+  $("clearProgressButton").addEventListener("click", clearSavedProgress);
   $("skipButton").addEventListener("click", skipQuestion);
   $("nextButton").addEventListener("click", handlePrimary);
   $("whyButton").addEventListener("click", () => {
@@ -94,6 +102,87 @@ function startStep(step) {
   state.reviewing = false;
   state.finished = false;
   renderQuestion();
+  saveProgress();
+}
+
+function restoreProgress() {
+  const saved = loadSavedProgress();
+  if (!saved) return false;
+
+  state.level = saved.level;
+  state.step = saved.step;
+  state.xp = saved.xp;
+  state.streak = saved.streak;
+  state.stepQuestions = generateStep(state.level, state.step);
+  state.correctIds = new Set(saved.correctIds || []);
+  state.completed = state.correctIds.size;
+  state.mistakes = hydrateSavedQuestions(saved.mistakeIds || [], true);
+  state.queue = hydrateSavedQuestions(saved.queueIds || state.stepQuestions.map((question) => question.id), saved.reviewing);
+  if (!state.queue.length) state.queue = state.stepQuestions;
+  state.currentIndex = Math.min(saved.currentIndex || 0, state.queue.length - 1);
+  while (
+    state.currentIndex < state.queue.length - 1 &&
+    state.correctIds.has(state.queue[state.currentIndex].id)
+  ) {
+    state.currentIndex += 1;
+  }
+  state.selected = null;
+  state.answered = false;
+  state.reviewing = Boolean(saved.reviewing);
+  state.finished = Boolean(saved.finished);
+
+  document.querySelectorAll(".level-button").forEach((button) => {
+    button.classList.toggle("active", button.dataset.level === state.level);
+  });
+
+  if (state.finished) {
+    renderCelebration();
+  } else {
+    renderQuestion();
+  }
+  return true;
+}
+
+function loadSavedProgress() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (!saved || !levels.some((level) => level.id === saved.level)) return null;
+    if (!Number.isInteger(saved.step) || saved.step < 1 || saved.step > TOTAL_STEPS) return null;
+    return saved;
+  } catch {
+    return null;
+  }
+}
+
+function hydrateSavedQuestions(ids, review) {
+  return ids
+    .map((id) => state.stepQuestions.find((question) => question.id === id))
+    .filter(Boolean)
+    .map((question) => ({ ...question, review: Boolean(review) || Boolean(question.review) }));
+}
+
+function saveProgress() {
+  const payload = {
+    level: state.level,
+    step: state.step,
+    xp: state.xp,
+    streak: state.streak,
+    currentIndex: state.currentIndex,
+    correctIds: [...state.correctIds],
+    queueIds: state.queue.map((question) => question.id),
+    mistakeIds: state.mistakes.map((question) => question.id),
+    reviewing: state.reviewing,
+    finished: state.finished,
+    savedAt: new Date().toISOString(),
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+}
+
+function clearSavedProgress() {
+  const confirmed = window.confirm("Apagar todo o progresso salvo neste aparelho?");
+  if (!confirmed) return;
+  localStorage.removeItem(STORAGE_KEY);
+  startLevel(state.level);
 }
 
 function generateStep(level, step) {
@@ -557,11 +646,13 @@ function submitAnswer() {
   $("nextButton").textContent = nextButtonLabelAfterAnswer();
   $("skipButton").disabled = true;
   renderProgress();
+  saveProgress();
 }
 
 function skipQuestion() {
   const question = currentQuestion();
   state.mistakes.push({ ...question, review: true });
+  saveProgress();
   moveNext();
 }
 
@@ -575,6 +666,7 @@ function moveNext() {
   if (state.currentIndex < state.queue.length - 1) {
     state.currentIndex += 1;
     renderQuestion();
+    saveProgress();
     return;
   }
 
@@ -583,6 +675,7 @@ function moveNext() {
     state.currentIndex = 0;
     state.reviewing = true;
     renderQuestion();
+    saveProgress();
     return;
   }
 
@@ -616,6 +709,7 @@ function renderCelebration() {
   $("nextButton").disabled = false;
   $("skipButton").disabled = true;
   renderProgress(1);
+  saveProgress();
 }
 
 function sourceText(question) {
