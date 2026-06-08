@@ -83,6 +83,17 @@ function renderLevels() {
       showHome();
     });
   });
+
+  $("homeLevelSwitch").innerHTML = levels
+    .map((level) => `<button class="home-level-button" type="button" data-level="${level.id}">${level.label.replace("Nível ", "N")}</button>`)
+    .join("");
+
+  document.querySelectorAll(".home-level-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      startLevel(button.dataset.level);
+      showHome();
+    });
+  });
 }
 
 function startLevel(level) {
@@ -228,6 +239,9 @@ function renderHome() {
   $("homeUnitLabel").textContent = `Passo ${activeStep} de ${TOTAL_STEPS}`;
   $("homeTitle").textContent = level.theme;
   $("homeMascot").innerHTML = capybaraSvg("home-capybara");
+  document.querySelectorAll(".home-level-button").forEach((button) => {
+    button.classList.toggle("active", button.dataset.level === state.level);
+  });
 
   $("stepPath").innerHTML = Array.from({ length: TOTAL_STEPS }, (_, index) => {
     const step = index + 1;

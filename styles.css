@@ -550,6 +550,30 @@ button {
     background: #10252c;
   }
 
+  .home-level-switch {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: -6px 0 18px;
+  }
+
+  .home-level-button {
+    min-height: 38px;
+    border: 2px solid #29414b;
+    border-radius: 12px;
+    color: #9fb2bd;
+    background: #10252c;
+    font-size: 15px;
+    font-weight: 950;
+  }
+
+  .home-level-button.active {
+    border-color: #ffc400;
+    color: #10252c;
+    background: #ffc400;
+    box-shadow: 0 4px 0 #b48400;
+  }
+
   .home-card {
     display: grid;
     grid-template-columns: 1fr 72px;
