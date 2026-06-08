@@ -15,7 +15,7 @@
       "feedback": "Isso. Dois litros correspondem a 2000 mililitros, e precisamos contar apenas copos completos.",
       "misconception": "O cuidado aqui e nao arredondar para cima: sobra agua, mas ela nao enche outro copo ate a borda.",
       "explanation": "Como 2 litros equivalem a 2000 mililitros, fazemos 2000 dividido por 130. Temos 15 copos completos, pois 15 x 130 = 1950, e sobram 50 mililitros.",
-      "visual": "officialCard",
+      "visual": "officialCups",
       "source": {
         "competition": "OBMEP",
         "year": 2011,
@@ -40,7 +40,7 @@
       "feedback": "Boa. Voce percebeu que o produto grande ja e multiplo de 8.",
       "misconception": "Nao e preciso calcular o produto. O ponto e notar a divisibilidade por 8.",
       "explanation": "O produto 1 x 2 x 3 x 4 x ... x 2011 contem o fator 8, portanto e multiplo de 8. Como 21 deixa resto 5 na divisao por 8, o resto total e 5.",
-      "visual": "officialCard",
+      "visual": "officialModulo",
       "source": {
         "competition": "OBMEP",
         "year": 2011,
@@ -65,7 +65,7 @@
       "feedback": "Certo. A ideia e contar quais algarismos precisam existir e quais precisam aparecer duplicados.",
       "misconception": "Nao conte uma vela nova a cada aniversario. Ele guarda e reutiliza as velinhas.",
       "explanation": "Para formar idades com dois algarismos diferentes a partir de 40, ele precisa ter os algarismos de 0 a 9, ou seja, 10 velas. Para 44, 55, 66 e 77, precisa de uma segunda vela desses algarismos. Total: 10 + 4 = 14.",
-      "visual": "officialCard",
+      "visual": "officialCandles",
       "source": {
         "competition": "OBMEP",
         "year": 2011,
@@ -90,7 +90,7 @@
       "feedback": "Muito bem. Voce usou o pior caso para minimizar a intersecao.",
       "misconception": "Nao basta multiplicar as porcentagens. A pergunta pede o menor numero garantido.",
       "explanation": "No maximo 15% nao possuem televisao e 20% nao possuem geladeira. Assim, no maximo 35% podem faltar a pelo menos um dos dois. Logo, no minimo 65% possuem ambos. De 1000 pessoas, isso da 650.",
-      "visual": "officialCard",
+      "visual": "officialAppliances",
       "source": {
         "competition": "OBMEP",
         "year": 2011,
@@ -115,7 +115,7 @@
       "feedback": "Excelente. A diferenca muda porque Joao e Ana pertencem a grupos diferentes.",
       "misconception": "A resposta nao continua sendo 5, pois ao trocar o ponto de vista de Joao para Ana, um menino entra e uma menina sai da contagem.",
       "explanation": "Se Joao tem x irmaos e y irmas, entao x - y = 5. Para Ana, os irmaos sao x + 1, pois Joao tambem conta, e as irmas sao y - 1, pois Ana nao conta a si mesma. A diferenca e (x + 1) - (y - 1) = 7.",
-      "visual": "officialCard",
+      "visual": "officialSiblings",
       "source": {
         "competition": "OBMEP",
         "year": 2011,

@@ -747,7 +747,20 @@ button {
   }
 
   .visual-board {
-    display: none;
+    display: grid;
+    height: 112px;
+    min-height: 0;
+    margin: -6px 0 -4px;
+    border: 0;
+    border-radius: 18px;
+    background: transparent;
+    overflow: hidden;
+    box-shadow: none;
+  }
+
+  .visual-board svg {
+    width: 100%;
+    max-height: 112px;
   }
 
   .question-copy {
@@ -761,7 +774,7 @@ button {
     max-width: 100%;
     inline-size: 100%;
     color: #f5fbff;
-    font-size: 25px;
+    font-size: 20px;
     line-height: 1.18;
     overflow-wrap: anywhere;
     word-break: normal;
@@ -776,7 +789,7 @@ button {
     gap: 12px;
     width: 100%;
     max-width: 100%;
-    padding-top: min(8vh, 54px);
+    padding-top: 16px;
     border-top: 3px solid #263e48;
   }
 

@@ -849,6 +849,62 @@ function renderProgress(forceRatio) {
 }
 
 const visuals = {
+  officialCups: () => `
+    <svg viewBox="0 0 360 180" role="img" aria-label="Dois litros de agua e copos de 130 mililitros">
+      <rect width="360" height="180" rx="18" fill="#10252c"/>
+      <path d="M58 35 H132 L118 145 H72 Z" fill="#244955" stroke="#8fd8ff" stroke-width="4"/>
+      <path d="M69 78 H122 L114 138 H76 Z" fill="#2f80ed" opacity=".85"/>
+      <text x="95" y="164" text-anchor="middle" fill="#f5fbff" font-size="18" font-weight="900">2 L</text>
+      ${Array.from({ length: 5 }, (_, i) => `<g transform="translate(${168 + i * 33} 58)"><path d="M0 0 H24 L20 50 H4 Z" fill="#f8fbff" stroke="#29414b" stroke-width="3"/><path d="M4 26 H20 L18 48 H6 Z" fill="#6ec6ff"/></g>`).join("")}
+      <text x="245" y="140" text-anchor="middle" fill="#ffc400" font-size="19" font-weight="900">130 ml cada</text>
+    </svg>`,
+  officialModulo: () => `
+    <svg viewBox="0 0 360 180" role="img" aria-label="Produto multiplo de oito mais vinte e um">
+      <rect width="360" height="180" rx="18" fill="#10252c"/>
+      <rect x="32" y="42" width="132" height="76" rx="16" fill="#203a43" stroke="#58cc02" stroke-width="4"/>
+      <text x="98" y="76" text-anchor="middle" fill="#f5fbff" font-size="19" font-weight="900">1×2×...×2011</text>
+      <text x="98" y="101" text-anchor="middle" fill="#58cc02" font-size="17" font-weight="900">multiplo de 8</text>
+      <text x="184" y="90" text-anchor="middle" fill="#f5fbff" font-size="32" font-weight="900">+</text>
+      <rect x="210" y="42" width="92" height="76" rx="16" fill="#203a43" stroke="#ffc400" stroke-width="4"/>
+      <text x="256" y="90" text-anchor="middle" fill="#ffc400" font-size="34" font-weight="900">21</text>
+      <text x="180" y="150" text-anchor="middle" fill="#9fb2bd" font-size="18" font-weight="900">resto por 8</text>
+    </svg>`,
+  officialCandles: () => `
+    <svg viewBox="0 0 360 180" role="img" aria-label="Velinhas de algarismos para aniversarios">
+      <rect width="360" height="180" rx="18" fill="#10252c"/>
+      ${"0123456789".split("").map((n, i) => `<g transform="translate(${28 + i * 31} 45)"><rect width="24" height="62" rx="7" fill="#ffc400" stroke="#29414b" stroke-width="3"/><text x="12" y="41" text-anchor="middle" fill="#10252c" font-size="24" font-weight="950">${n}</text><path d="M12 -8 C4 4 20 4 12 -8" fill="#ff6b4a"/></g>`).join("")}
+      <text x="180" y="138" text-anchor="middle" fill="#f5fbff" font-size="18" font-weight="900">reutiliza de 40 ate 85</text>
+    </svg>`,
+  officialAppliances: () => `
+    <svg viewBox="0 0 360 180" role="img" aria-label="Pesquisa sobre televisao e geladeira">
+      <rect width="360" height="180" rx="18" fill="#10252c"/>
+      <g transform="translate(38 36)">
+        <rect x="0" y="0" width="120" height="86" rx="14" fill="#203a43" stroke="#2f80ed" stroke-width="4"/>
+        <text x="60" y="36" text-anchor="middle" fill="#f5fbff" font-size="18" font-weight="900">TV</text>
+        <text x="60" y="66" text-anchor="middle" fill="#58cc02" font-size="25" font-weight="950">85%</text>
+      </g>
+      <g transform="translate(202 36)">
+        <rect x="0" y="0" width="120" height="86" rx="14" fill="#203a43" stroke="#ffc400" stroke-width="4"/>
+        <text x="60" y="36" text-anchor="middle" fill="#f5fbff" font-size="18" font-weight="900">geladeira</text>
+        <text x="60" y="66" text-anchor="middle" fill="#58cc02" font-size="25" font-weight="950">80%</text>
+      </g>
+      <text x="180" y="151" text-anchor="middle" fill="#9fb2bd" font-size="17" font-weight="900">1000 pessoas · minimo dos dois</text>
+    </svg>`,
+  officialSiblings: () => `
+    <svg viewBox="0 0 360 180" role="img" aria-label="Joao e Ana comparando irmaos e irmas">
+      <rect width="360" height="180" rx="18" fill="#10252c"/>
+      <g transform="translate(68 50)">
+        <circle cx="34" cy="24" r="22" fill="#2f80ed"/><rect x="12" y="46" width="44" height="48" rx="16" fill="#2f80ed"/>
+        <text x="34" y="121" text-anchor="middle" fill="#f5fbff" font-size="18" font-weight="900">Joao</text>
+      </g>
+      <g transform="translate(224 50)">
+        <circle cx="34" cy="24" r="22" fill="#ff6fae"/><rect x="12" y="46" width="44" height="48" rx="16" fill="#ff6fae"/>
+        <text x="34" y="121" text-anchor="middle" fill="#f5fbff" font-size="18" font-weight="900">Ana</text>
+      </g>
+      <path d="M142 82 H218" stroke="#ffc400" stroke-width="6" stroke-linecap="round"/>
+      <text x="180" y="70" text-anchor="middle" fill="#ffc400" font-size="19" font-weight="950">+5</text>
+      <text x="180" y="145" text-anchor="middle" fill="#9fb2bd" font-size="16" font-weight="900">muda o ponto de vista</text>
+    </svg>`,
   officialCard: (question) => `
     <svg viewBox="0 0 360 260" role="img" aria-label="Questao oficial da OBMEP">
       <rect width="360" height="260" fill="#f6f8f4"/>
