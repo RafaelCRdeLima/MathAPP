@@ -25,6 +25,7 @@ const state = {
   streak: 0,
   reviewing: false,
   finished: false,
+  screen: "home",
 };
 
 const $ = (id) => document.getElementById(id);
@@ -38,12 +39,15 @@ function init() {
   loadQuestionBank().then(() => {
     if (requestedLevel) {
       startLevel(state.level);
+      showHome();
       return;
     }
     restoreProgress() || startLevel(state.level);
+    showHome();
   });
   $("resetButton").addEventListener("click", () => startStep(state.step));
-  $("mobileResetButton").addEventListener("click", () => startStep(state.step));
+  $("mobileResetButton").addEventListener("click", showHome);
+  $("homeSettingsButton").addEventListener("click", clearSavedProgress);
   $("clearProgressButton").addEventListener("click", clearSavedProgress);
   $("skipButton").addEventListener("click", skipQuestion);
   $("nextButton").addEventListener("click", handlePrimary);
@@ -74,7 +78,10 @@ function renderLevels() {
     .join("");
 
   document.querySelectorAll(".level-button").forEach((button) => {
-    button.addEventListener("click", () => startLevel(button.dataset.level));
+    button.addEventListener("click", () => {
+      startLevel(button.dataset.level);
+      showHome();
+    });
   });
 }
 
@@ -141,6 +148,7 @@ function restoreProgress() {
   } else {
     renderQuestion();
   }
+  showHome();
   return true;
 }
 
@@ -184,6 +192,54 @@ function clearSavedProgress() {
   if (!confirmed) return;
   localStorage.removeItem(STORAGE_KEY);
   startLevel(state.level);
+  showHome();
+}
+
+function showHome() {
+  state.screen = "home";
+  $("mobileHome").classList.add("active");
+  document.querySelector(".lesson").classList.remove("active");
+  renderHome();
+}
+
+function showLesson() {
+  state.screen = "lesson";
+  $("mobileHome").classList.remove("active");
+  document.querySelector(".lesson").classList.add("active");
+}
+
+function openStep(step) {
+  const maxUnlocked = Math.min(TOTAL_STEPS, Math.max(state.step, completedStepsCount() + 1));
+  if (step > maxUnlocked) return;
+  startStep(step);
+  showLesson();
+}
+
+function completedStepsCount() {
+  return Math.max(0, state.step - (state.correctIds.size === QUESTIONS_PER_STEP || state.finished ? 0 : 1));
+}
+
+function renderHome() {
+  const level = levels.find((item) => item.id === state.level);
+  const completed = completedStepsCount();
+  const activeStep = Math.min(TOTAL_STEPS, completed + 1);
+  $("homeLevelBadge").textContent = level.label;
+  $("homeXpBadge").textContent = `${state.xp} XP`;
+  $("homeUnitLabel").textContent = `Passo ${activeStep} de ${TOTAL_STEPS}`;
+  $("homeTitle").textContent = level.theme;
+  $("homeMascot").innerHTML = capybaraSvg("home-capybara");
+
+  $("stepPath").innerHTML = Array.from({ length: TOTAL_STEPS }, (_, index) => {
+    const step = index + 1;
+    const status = step <= completed ? "done" : step === activeStep ? "current" : "locked";
+    const disabled = status === "current" ? "" : "disabled";
+    const icon = status === "done" ? "✓" : step;
+    return `<button class="step-node ${status}" type="button" data-step="${step}" ${disabled}>${icon}</button>`;
+  }).join("");
+
+  document.querySelectorAll(".step-node:not(:disabled)").forEach((button) => {
+    button.addEventListener("click", () => openStep(Number(button.dataset.step)));
+  });
 }
 
 function generateStep(level, step) {
@@ -635,18 +691,21 @@ function submitAnswer() {
     state.streak += 1;
     $("feedbackTitle").textContent = question.review ? "Agora ficou sólido!" : "Boa!";
     $("feedbackText").textContent = question.feedback;
+    $("feedbackMascot").innerHTML = capybaraSvg("mini-capybara happy");
   } else {
     state.streak = 0;
     state.mistakes.push({ ...question, review: true });
     $("feedbackPanel").classList.add("wrong");
     $("feedbackTitle").textContent = "Não foi dessa vez";
     $("feedbackText").textContent = question.misconception;
+    $("feedbackMascot").innerHTML = "";
   }
 
   $("feedbackPanel").hidden = false;
   $("nextButton").textContent = nextButtonLabelAfterAnswer();
   $("skipButton").disabled = true;
   renderProgress();
+  renderHome();
   saveProgress();
 }
 
@@ -710,6 +769,7 @@ function renderCelebration() {
   $("nextButton").disabled = false;
   $("skipButton").disabled = true;
   renderProgress(1);
+  renderHome();
   saveProgress();
 }
 
@@ -723,6 +783,36 @@ function sourceText(question) {
     question.source.questionNumber ? `questao ${question.source.questionNumber}` : "",
   ].filter(Boolean);
   return parts.join(" - ");
+}
+
+function capybaraSvg(className = "") {
+  return `
+    <svg class="${className}" viewBox="0 0 220 180" role="img" aria-label="Capivarinha mascote">
+      <defs>
+        <radialGradient id="capyGlow" cx="50%" cy="45%" r="65%">
+          <stop offset="0%" stop-color="#ffe0a3"/>
+          <stop offset="100%" stop-color="#8b4a26"/>
+        </radialGradient>
+      </defs>
+      <ellipse cx="112" cy="94" rx="78" ry="64" fill="#c98248" stroke="#3a1a10" stroke-width="6"/>
+      <ellipse cx="112" cy="112" rx="55" ry="38" fill="#ffe5b3"/>
+      <circle cx="60" cy="47" r="24" fill="#a8663c" stroke="#3a1a10" stroke-width="6"/>
+      <circle cx="164" cy="47" r="24" fill="#a8663c" stroke="#3a1a10" stroke-width="6"/>
+      <ellipse cx="83" cy="83" rx="19" ry="24" fill="#2a120c"/>
+      <ellipse cx="140" cy="83" rx="19" ry="24" fill="#2a120c"/>
+      <circle cx="90" cy="75" r="8" fill="#fff"/>
+      <circle cx="147" cy="75" r="8" fill="#fff"/>
+      <ellipse cx="112" cy="104" rx="24" ry="18" fill="#8b5536"/>
+      <circle cx="102" cy="102" r="5" fill="#1d0d08"/>
+      <circle cx="122" cy="102" r="5" fill="#1d0d08"/>
+      <path d="M102 120 Q112 132 122 120" fill="none" stroke="#3a1a10" stroke-width="5" stroke-linecap="round"/>
+      <path d="M45 74 C62 49 99 39 113 48 C130 39 165 49 181 74" fill="none" stroke="#050505" stroke-width="10" stroke-linecap="round"/>
+      <path d="M65 72 H103 M121 72 H159" stroke="#050505" stroke-width="9" stroke-linecap="round"/>
+      <ellipse cx="68" cy="107" rx="14" ry="10" fill="#ff7f78" opacity=".75"/>
+      <ellipse cx="156" cy="107" rx="14" ry="10" fill="#ff7f78" opacity=".75"/>
+      <path d="M65 149 Q112 169 160 149" fill="none" stroke="#3a1a10" stroke-width="8" stroke-linecap="round"/>
+    </svg>
+  `;
 }
 
 function renderProgress(forceRatio) {

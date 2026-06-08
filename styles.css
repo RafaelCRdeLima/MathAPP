@@ -248,6 +248,10 @@ button {
   display: none;
 }
 
+.mobile-home {
+  display: none;
+}
+
 .topbar,
 .lesson-actions {
   display: flex;
@@ -497,7 +501,165 @@ button {
     display: none;
   }
 
+  .mobile-home {
+    min-height: 100svh;
+    width: min(346px, calc(100dvw - 44px));
+    max-width: min(346px, calc(100dvw - 44px));
+    margin: 0 0 0 22px;
+    padding: 24px 0 96px;
+    color: #f5fbff;
+    background: #0f2027;
+  }
+
+  .mobile-home.active {
+    display: block;
+  }
+
   .lesson {
+    display: none;
+  }
+
+  .lesson.active {
+    display: flex;
+  }
+
+  .home-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    padding-bottom: 14px;
+    background: linear-gradient(#0f2027 82%, rgba(15, 32, 39, 0));
+  }
+
+  .home-stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+    color: #d7e7ee;
+    font-weight: 900;
+  }
+
+  .home-stats span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 13px;
+    border: 2px solid #29414b;
+    border-radius: 10px;
+    background: #10252c;
+  }
+
+  .home-card {
+    display: grid;
+    grid-template-columns: 1fr 72px;
+    min-height: 112px;
+    border-radius: 20px;
+    background: #ff4b55;
+    box-shadow: 0 8px 0 #b92d36;
+    overflow: hidden;
+  }
+
+  .home-card > div {
+    padding: 20px;
+  }
+
+  .home-card p,
+  .home-card h2 {
+    margin: 0;
+  }
+
+  .home-card p {
+    color: #ffd2d6;
+    font-size: 14px;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .home-card h2 {
+    margin-top: 8px;
+    color: #fff;
+    font-size: 25px;
+    line-height: 1.08;
+  }
+
+  #homeSettingsButton {
+    display: grid;
+    place-items: center;
+    border-left: 3px solid rgba(117, 20, 28, 0.28);
+    color: #fff;
+    background: transparent;
+    font-size: 34px;
+    font-weight: 900;
+  }
+
+  .home-mascot {
+    display: flex;
+    justify-content: center;
+    margin: 26px 0 6px;
+  }
+
+  .home-capybara {
+    width: min(58vw, 210px);
+    filter: drop-shadow(0 16px 22px rgba(0, 0, 0, 0.32));
+  }
+
+  .step-path {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px 16px;
+    align-items: center;
+    width: min(326px, 100%);
+    margin: 18px auto 0;
+    padding-bottom: 28px;
+  }
+
+  .step-node {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 74px;
+    height: 74px;
+    margin: 0 auto;
+    border-radius: 50%;
+    color: #f5fbff;
+    background: #344b55;
+    box-shadow: 0 8px 0 #263e48;
+    font-size: 22px;
+    font-weight: 950;
+  }
+
+  .step-node:nth-child(6n + 2),
+  .step-node:nth-child(6n + 5) {
+    transform: translateY(24px);
+  }
+
+  .step-node.done {
+    background: #58cc02;
+    box-shadow: 0 8px 0 #399100;
+  }
+
+  .step-node.current {
+    background: #ffc400;
+    color: #10252c;
+    box-shadow: 0 8px 0 #b48400;
+  }
+
+  .step-node.current::after {
+    content: "";
+    position: absolute;
+    inset: -10px;
+    border: 5px solid #344b55;
+    border-radius: 50%;
+  }
+
+  .step-node.locked {
+    color: #6f8792;
+    background: #2d424b;
+    box-shadow: 0 8px 0 #22353d;
+  }
+
+  .lesson.active {
     display: flex;
     flex-direction: column;
     gap: 18px;
@@ -680,7 +842,9 @@ button {
 
   .feedback {
     display: grid;
+    grid-template-columns: auto 1fr;
     gap: 10px;
+    align-items: center;
     padding: 14px 16px;
     border: 2px solid #24404b;
     border-radius: 16px;
@@ -691,6 +855,30 @@ button {
   .feedback.wrong {
     border-color: #6d3036;
     background: #2a171a;
+  }
+
+  .feedback-mascot {
+    display: none;
+  }
+
+  .feedback-mascot:has(svg) {
+    display: block;
+  }
+
+  .mini-capybara {
+    width: 78px;
+    height: auto;
+    filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.28));
+  }
+
+  .mini-capybara.happy {
+    animation: capyBounce 520ms ease both;
+  }
+
+  @keyframes capyBounce {
+    0% { transform: translateY(8px) scale(0.92); }
+    55% { transform: translateY(-8px) scale(1.05); }
+    100% { transform: translateY(0) scale(1); }
   }
 
   .feedback p {

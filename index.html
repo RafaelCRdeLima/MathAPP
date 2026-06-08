@@ -47,9 +47,28 @@
         <button class="danger-button" id="clearProgressButton" type="button">Apagar progresso</button>
       </aside>
 
+      <section class="mobile-home" id="mobileHome" aria-label="Mapa da trilha">
+        <header class="home-header">
+          <div class="home-stats">
+            <span id="homeLevelBadge">Nível 1</span>
+            <span id="homeXpBadge">0 XP</span>
+          </div>
+          <div class="home-card">
+            <div>
+              <p id="homeUnitLabel">Passo 1 de 100</p>
+              <h2 id="homeTitle">Trilha OBMEP</h2>
+            </div>
+            <button id="homeSettingsButton" type="button" aria-label="Apagar progresso">☰</button>
+          </div>
+          <div class="home-mascot" id="homeMascot"></div>
+        </header>
+
+        <div class="step-path" id="stepPath"></div>
+      </section>
+
       <main class="lesson">
         <div class="mobile-progress" aria-label="Progresso do passo">
-          <button class="mobile-close" id="mobileResetButton" type="button" aria-label="Reiniciar passo">×</button>
+          <button class="mobile-close" id="mobileResetButton" type="button" aria-label="Voltar para a trilha">×</button>
           <div class="mobile-track"><span id="mobileProgressFill"></span></div>
         </div>
 
@@ -72,6 +91,7 @@
         <section class="answer-zone" id="answerZone" aria-label="Alternativas"></section>
 
         <section class="feedback" id="feedbackPanel" hidden>
+          <div class="feedback-mascot" id="feedbackMascot"></div>
           <div>
             <strong id="feedbackTitle">Muito bem!</strong>
             <p id="feedbackText"></p>
